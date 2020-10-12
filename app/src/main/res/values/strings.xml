@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Pokedex</string>
     <string name="pokemon_img">Image of pokemon</string>
+    <string name="error">This error means that data cannot be found.</string>
 </resources>

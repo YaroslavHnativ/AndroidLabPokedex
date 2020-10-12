@@ -1,4 +1,4 @@
-package com.hnativ.androidlabpokedex
+package com.hnativ.androidlabpokedex.domain
 
 data class Pokemon(
     val id: String,
