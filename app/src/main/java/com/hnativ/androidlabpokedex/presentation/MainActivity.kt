@@ -53,6 +53,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setData(data: List<Pokemon>) {
-        adapter.submitList(pokemonList)
+        adapter.submitList(data)
     }
 }

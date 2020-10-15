@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hnativ.androidlabpokedex.data.PokemonRepositoryImpl
 import com.hnativ.androidlabpokedex.domain.Pokemon
+import com.hnativ.androidlabpokedex.domain.PokemonRepository
 import kotlin.random.Random
 
 class PokemonViewModel : ViewModel() {
@@ -24,21 +25,40 @@ class PokemonViewModel : ViewModel() {
         get() = _isErrorLiveData
 
     fun loadData() {
-        _contentLiveData.value = emptyList()
-        _isLoadingLiveData.value = true
-        _isErrorLiveData.value = false
+        showLoading()
 
         Handler().postDelayed({
             if (Random.nextInt() % 10 == 0) {
-                _contentLiveData.value = emptyList()
-                _isLoadingLiveData.value = false
-                _isErrorLiveData.value = true
+                showError()
             } else {
-                val data  = repository.getPokemonList()
-                _contentLiveData.postValue(data)
-                _isLoadingLiveData.value = false
-                _isErrorLiveData.value = false
+                repository.getPokemonList(object : PokemonRepository.ApiCallback<List<Pokemon>> {
+                    override fun onSuccess(data: List<Pokemon>) {
+                        showData(data)
+                    }
+
+                    override fun onError() {
+                        showError()
+                    }
+                })
             }
         }, 3000)
+    }
+
+    private fun showData(data: List<Pokemon>) {
+        _contentLiveData.postValue(data)
+        _isLoadingLiveData.value = false
+        _isErrorLiveData.value = false
+    }
+
+    private fun showError() {
+        _contentLiveData.value = emptyList()
+        _isLoadingLiveData.value = false
+        _isErrorLiveData.value = true
+    }
+
+    private fun showLoading() {
+        _contentLiveData.value = emptyList()
+        _isLoadingLiveData.value = true
+        _isErrorLiveData.value = false
     }
 }
