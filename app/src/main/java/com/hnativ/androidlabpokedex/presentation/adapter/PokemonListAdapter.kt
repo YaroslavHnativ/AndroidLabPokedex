@@ -3,16 +3,20 @@ package com.hnativ.androidlabpokedex.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ExpandableListView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.Pokemon
+import com.hnativ.androidlabpokedex.domain.PokemonDetails
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_pokemon.view.*
 
 class PokemonListAdapter :
     ListAdapter<Pokemon, PokemonListAdapter.PokemonViewHolder>(DiffCallback) {
+
+    var clickListener: PokemonListener? = null
 
     companion object DiffCallback : DiffUtil.ItemCallback<Pokemon>() {
         override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {
@@ -29,7 +33,12 @@ class PokemonListAdapter :
         private val name = view.name
         private val image = view.image
 
-        fun bindTo(pokemon: Pokemon) {
+        fun bindTo(pokemon: Pokemon, clickListener: PokemonListener) {
+
+            itemView.setOnClickListener {
+                clickListener.onClick(pokemon)
+            }
+
             name.text = pokemon.name
 
             Picasso.get()
@@ -46,7 +55,11 @@ class PokemonListAdapter :
     }
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
-        holder.bindTo(getItem(position))
+        holder.bindTo(getItem(position), clickListener!!)
     }
 
+}
+
+class PokemonListener(val clickListener: (pokemonId: String) -> Unit) {
+    fun onClick(pokemon: Pokemon) = clickListener(pokemon.id)
 }

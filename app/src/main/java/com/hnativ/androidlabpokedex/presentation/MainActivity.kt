@@ -9,18 +9,23 @@ import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.Pokemon
 import com.hnativ.androidlabpokedex.domain.pokemonList
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListAdapter
+import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListener
+import com.hnativ.androidlabpokedex.presentation.details.PokemonDetailsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val adapter = PokemonListAdapter()
     private val viewModel: PokemonViewModel by viewModels()
+    private val adapter = PokemonListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         recyclerView.adapter = adapter
+
+        adapter.clickListener = PokemonListener{id ->
+            PokemonDetailsActivity.openDetails(this,id)
+        }
 
         viewModel.isLoadingLiveData.observe(this, Observer {
             loadingView.visibility = if (it) {
