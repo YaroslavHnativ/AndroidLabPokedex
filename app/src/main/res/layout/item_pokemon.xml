@@ -6,7 +6,8 @@
     android:layout_margin="@dimen/card_margin"
     android:minWidth="@dimen/min_spacing"
     android:minHeight="@dimen/min_spacing"
-    app:cardCornerRadius="@dimen/corner_radius">
+    app:cardCornerRadius="@dimen/corner_radius"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
             android:id="@+id/image"
             android:layout_width="@dimen/img_size"
             android:layout_height="@dimen/img_size"
+            android:layout_margin="20dp"
             android:contentDescription="@string/pokemon_img"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,15 +27,19 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_margin"
+            android:gravity="center"
+            android:elevation="4dp"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_size"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/image"
-            app:layout_constraintStart_toStartOf="@+id/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

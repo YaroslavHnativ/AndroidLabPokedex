@@ -18,4 +18,4 @@ val PokemonPartialInfo.id: String
     get() = url.toUri().lastPathSegment ?: ""
 
 val PokemonPartialInfo.imageUrl: String
-    get() = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
+    get() = "https://pokeres.bastionbot.org/images/pokemon/$id.png"

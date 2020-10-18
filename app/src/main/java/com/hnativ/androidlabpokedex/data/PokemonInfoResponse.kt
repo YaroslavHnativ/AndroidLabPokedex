@@ -17,4 +17,4 @@ data class PokemonInfoResponse(
 }
 
 val PokemonInfoResponse.imageUrl: String
-    get() = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
+    get() = "https://pokeres.bastionbot.org/images/pokemon/$id.png"

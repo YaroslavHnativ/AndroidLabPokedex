@@ -7,7 +7,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.Pokemon
-import com.hnativ.androidlabpokedex.domain.pokemonList
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListAdapter
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListener
 import com.hnativ.androidlabpokedex.presentation.details.PokemonDetailsActivity
