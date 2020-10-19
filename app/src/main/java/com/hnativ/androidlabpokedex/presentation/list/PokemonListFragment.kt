@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.Pokemon
+import com.hnativ.androidlabpokedex.presentation.Router
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListAdapter
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListener
-import com.hnativ.androidlabpokedex.presentation.details.PokemonDetailsFragment
 import kotlinx.android.synthetic.main.fragment_pokemon_list.*
 
 class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
@@ -21,12 +21,7 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
         recyclerView.adapter = adapter
 
         adapter.clickListener = PokemonListener { id ->
-            val fragment = PokemonDetailsFragment.newInstance(id)
-
-            requireActivity().supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer,fragment)
-                .addToBackStack(null)
-                .commit()
+            (requireActivity() as Router).openPokemonDetails(id)
         }
 
         listViewModel.isLoadingLiveData.observe(viewLifecycleOwner, {
