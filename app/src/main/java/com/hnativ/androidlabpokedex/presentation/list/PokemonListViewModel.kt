@@ -1,4 +1,4 @@
-package com.hnativ.androidlabpokedex.presentation
+package com.hnativ.androidlabpokedex.presentation.list
 
 import android.os.Handler
 import androidx.lifecycle.LiveData
@@ -9,7 +9,7 @@ import com.hnativ.androidlabpokedex.domain.Pokemon
 import com.hnativ.androidlabpokedex.domain.PokemonRepository
 import kotlin.random.Random
 
-class PokemonViewModel : ViewModel() {
+class PokemonListViewModel : ViewModel() {
     private val repository = PokemonRepositoryImpl()
 
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
