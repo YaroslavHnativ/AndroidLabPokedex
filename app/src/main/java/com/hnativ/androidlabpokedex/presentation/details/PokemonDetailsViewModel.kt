@@ -21,7 +21,6 @@ class PokemonDetailsViewModel : ViewModel() {
             }
 
             override fun onError() {
-                TODO("Not yet implemented")
             }
         })
     }

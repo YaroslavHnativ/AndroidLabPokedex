@@ -3,6 +3,8 @@ package com.hnativ.androidlabpokedex.data
 data class PokemonInfoResponse(
     val id: String,
     val name: String,
+    val height: Int,
+    val weight: Int,
     val abilities: List<Ability>
 ) {
     data class Ability(

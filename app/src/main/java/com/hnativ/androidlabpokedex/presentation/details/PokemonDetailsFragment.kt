@@ -28,9 +28,32 @@ class PokemonDetailsFragment : Fragment(R.layout.fragment_pokemon_details) {
 
     private fun showPokemonDetails(pokemonDetails: PokemonDetails) {
         name.text = pokemonDetails.name
-        abilities.text = pokemonDetails.abilities.joinToString { it }
+
         Picasso.get()
             .load(pokemonDetails.imgUrl)
             .into(image)
+
+        weight.text = pokemonDetails.getWeightString()
+        height.text = pokemonDetails.getHeightString()
+
+        progressHp.labelText = pokemonDetails.getHpString()
+        progressHp.max = PokemonDetails.maxHp.toFloat()
+        progressHp.progress = pokemonDetails.hp.toFloat()
+
+        progressAttack.labelText = pokemonDetails.getAttackString()
+        progressAttack.max = PokemonDetails.maxAttack.toFloat()
+        progressAttack.progress = pokemonDetails.attack.toFloat()
+
+        progressDefense.labelText = pokemonDetails.getDefenseString()
+        progressDefense.max = PokemonDetails.maxDefense.toFloat()
+        progressDefense.progress = pokemonDetails.defense.toFloat()
+
+        progressSpeed.labelText = pokemonDetails.getSpeedString()
+        progressSpeed.max = PokemonDetails.maxSpeed.toFloat()
+        progressSpeed.progress = pokemonDetails.speed.toFloat()
+
+        progressExp.labelText = pokemonDetails.getExpString()
+        progressExp.max = PokemonDetails.maxExp.toFloat()
+        progressExp.progress = pokemonDetails.exp.toFloat()
     }
 }

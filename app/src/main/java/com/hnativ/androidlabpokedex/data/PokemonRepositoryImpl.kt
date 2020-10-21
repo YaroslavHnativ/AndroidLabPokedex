@@ -50,7 +50,7 @@ class PokemonRepositoryImpl : PokemonRepository {
                 val pokemonInfoResponse = response.body()
 
                 if (response.isSuccessful && pokemonInfoResponse != null) {
-                    val abilities = pokemonInfoResponse.abilities.map {
+                    val abilities:List<String> = pokemonInfoResponse.abilities.map {
                         it.ability.name
                     }
 
@@ -58,6 +58,8 @@ class PokemonRepositoryImpl : PokemonRepository {
                         pokemonInfoResponse.id,
                         pokemonInfoResponse.name,
                         pokemonInfoResponse.imageUrl,
+                        pokemonInfoResponse.height,
+                        pokemonInfoResponse.weight,
                         abilities
                     )
 
