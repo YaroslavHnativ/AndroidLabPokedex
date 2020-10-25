@@ -1,22 +1,18 @@
 package com.hnativ.androidlabpokedex.presentation.list
 
-import android.os.Handler
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.hnativ.androidlabpokedex.data.PokemonRepositoryImpl
+import androidx.lifecycle.*
 import com.hnativ.androidlabpokedex.domain.Pokemon
 import com.hnativ.androidlabpokedex.domain.PokemonRepository
-import kotlin.random.Random
+import kotlinx.coroutines.launch
+import java.io.IOException
 
-class PokemonListViewModel : ViewModel() {
-    private val repository = PokemonRepositoryImpl()
+class PokemonListViewModel(private val repository: PokemonRepository) : ViewModel() {
 
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
     val isLoadingLiveData: LiveData<Boolean>
         get() = _isLoadingLiveData
 
-    private val _contentLiveData = MutableLiveData<List<Pokemon>>()
+    private val _contentLiveData = repository.pokemonList
     val contentLiveData: LiveData<List<Pokemon>>
         get() = _contentLiveData
 
@@ -25,39 +21,48 @@ class PokemonListViewModel : ViewModel() {
         get() = _isErrorLiveData
 
     fun loadData() {
-        showLoading()
 
-        Handler().postDelayed({
-            if (Random.nextInt() % 10 == 0) {
-                showError()
-            } else {
-                repository.getPokemonList(object : PokemonRepository.ApiCallback<List<Pokemon>> {
-                    override fun onSuccess(data: List<Pokemon>) {
-                        showData(data)
-                    }
-
-                    override fun onError() {
-                        showError()
-                    }
-                })
+        viewModelScope.launch {
+            try {
+                if (repository.pokemonList.value.isNullOrEmpty()) {
+//                    showLoading()
+                    repository.refreshPokemonData()
+//                    showData()
+                }
+            } catch (networkError: IOException) {
+//                if (_contentLiveData.value.isNullOrEmpty())
+//                    Log.i("PokemonListViewModel", "Content is empty")
             }
-        }, 3000)
+        }
     }
 
-    private fun showData(data: List<Pokemon>) {
-        _contentLiveData.postValue(data)
+
+//    Handler().postDelayed(
+//    {
+//        if (Random.nextInt() % 10 == 0) {
+//            showError()
+//        } else {
+//            viewModelScope.launch {
+//                val data = repository.pokemonList
+//                showData(data)
+//            }
+//        }
+//    }, 3000)
+
+    private fun showData() {
+//        _contentLiveData = data as MutableLiveData<List<Pokemon>>
         _isLoadingLiveData.value = false
         _isErrorLiveData.value = false
     }
 
     private fun showError() {
-        _contentLiveData.value = emptyList()
+//        _contentLiveData.value = emptyList()
         _isLoadingLiveData.value = false
         _isErrorLiveData.value = true
     }
 
     private fun showLoading() {
-        _contentLiveData.value = emptyList()
+//        _contentLiveData.value = emptyList()
         _isLoadingLiveData.value = true
         _isErrorLiveData.value = false
     }

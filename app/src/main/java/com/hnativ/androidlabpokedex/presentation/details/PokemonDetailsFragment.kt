@@ -7,11 +7,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.PokemonDetails
+import com.hnativ.androidlabpokedex.presentation.MyViewModelFactory
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_pokemon_details.*
 
 class PokemonDetailsFragment : Fragment(R.layout.fragment_pokemon_details) {
-    private val viewModel: PokemonDetailsViewModel by viewModels()
+    private val viewModel: PokemonDetailsViewModel by viewModels {
+        val activity = requireNotNull(this.activity)
+        MyViewModelFactory(activity.application)
+    }
     private val navArgs: PokemonDetailsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,6 +35,8 @@ class PokemonDetailsFragment : Fragment(R.layout.fragment_pokemon_details) {
 
         Picasso.get()
             .load(pokemonDetails.imgUrl)
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.ic_broken_image)
             .into(image)
 
         weight.text = pokemonDetails.getWeightString()

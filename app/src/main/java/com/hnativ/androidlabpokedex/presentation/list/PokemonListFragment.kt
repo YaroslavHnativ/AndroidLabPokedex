@@ -7,12 +7,16 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.Pokemon
+import com.hnativ.androidlabpokedex.presentation.MyViewModelFactory
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListAdapter
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListener
 import kotlinx.android.synthetic.main.fragment_pokemon_list.*
 
 class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
-    private val listViewModel: PokemonListViewModel by viewModels()
+    private val listViewModel: PokemonListViewModel by viewModels {
+        val activity = requireNotNull(this.activity)
+        MyViewModelFactory(activity.application)
+    }
     private val adapter = PokemonListAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

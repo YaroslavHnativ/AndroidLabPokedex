@@ -1,8 +1,9 @@
 package com.hnativ.androidlabpokedex.data
 
-import retrofit2.Call
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -10,21 +11,25 @@ import retrofit2.http.Query
 interface PokedexApiService {
 
     @GET("pokemon")
-    fun fetchPokemonList(
-        @Query("limit") limit: Int = 20,
+    suspend fun fetchPokemonList(
+        @Query("limit") limit: Int = 100,
         @Query("offset") offset: Int = 0
-    ): Call<PokemonListResponse>
+    ): PokemonListResponse
 
     @GET("pokemon/{name}")
-    fun fetchPokemonInfo(
+    suspend fun fetchPokemonInfo(
         @Path("name") name: String
-    ): Call<PokemonInfoResponse>
+    ): PokemonInfoResponse
 }
 
 fun createPokedexApiService(): PokedexApiService {
+    val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
     val retrofit = Retrofit.Builder()
         .baseUrl("https://pokeapi.co/api/v2/")
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
     return retrofit.create(PokedexApiService::class.java)

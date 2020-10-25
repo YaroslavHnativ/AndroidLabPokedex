@@ -1,13 +1,11 @@
 package com.hnativ.androidlabpokedex.domain
 
+import androidx.lifecycle.LiveData
+
 interface PokemonRepository {
 
-    interface ApiCallback<T> {
-        fun onSuccess(data: T)
-        fun onError()
-    }
+    val pokemonList: LiveData<List<Pokemon>>
 
-    fun getPokemonList(callback: ApiCallback<List<Pokemon>>)
-
-    fun getPokemonById(id: String, callback: ApiCallback<PokemonDetails>)
+    suspend fun refreshPokemonData()
+    suspend fun getPokemonById(id: String): PokemonDetails
 }

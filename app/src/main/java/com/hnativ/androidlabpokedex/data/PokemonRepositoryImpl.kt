@@ -1,77 +1,50 @@
 package com.hnativ.androidlabpokedex.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.hnativ.androidlabpokedex.domain.Pokemon
 import com.hnativ.androidlabpokedex.domain.PokemonDetails
 import com.hnativ.androidlabpokedex.domain.PokemonRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.hnativ.androidlabpokedex.persistance.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-class PokemonRepositoryImpl : PokemonRepository {
+class PokemonRepositoryImpl(private val database: AppDatabase) : PokemonRepository {
+
     private val api: PokedexApiService = createPokedexApiService()
 
-    override fun getPokemonList(callback: PokemonRepository.ApiCallback<List<Pokemon>>) {
-        api.fetchPokemonList().enqueue(object : Callback<PokemonListResponse> {
-            override fun onResponse(
-                call: Call<PokemonListResponse>,
-                response: Response<PokemonListResponse>
-            ) {
-                val pokemonListResponse = response.body()
+    override val pokemonList: LiveData<List<Pokemon>> = Transformations
+        .map(database.pokemonDataDao().getPokemonList()) {
+            it.asPokemon()
+        }
 
-                if (response.isSuccessful && pokemonListResponse != null) {
-                    val pokemonList = pokemonListResponse.results.map { pokemonPartialInfoDto ->
-                        Pokemon(
-                            pokemonPartialInfoDto.id,
-                            pokemonPartialInfoDto.name,
-                            pokemonPartialInfoDto.imageUrl
-                        )
-                    }
-                    callback.onSuccess(pokemonList)
-                } else {
-                    callback.onError()
-                }
-            }
+    override suspend fun refreshPokemonData() {
+        withContext(Dispatchers.IO) {
+            val pokemonListResponse = api.fetchPokemonList()
+            pokemonListResponse.results.map { pokemonPartialInfo ->
+                runBlocking {
+                    val pokemonInfoResponse = api.fetchPokemonInfo(pokemonPartialInfo.name)
 
-            override fun onFailure(call: Call<PokemonListResponse>, t: Throwable) {
-                callback.onError()
-            }
-        })
-    }
-
-    override fun getPokemonById(
-        id: String,
-        callback: PokemonRepository.ApiCallback<PokemonDetails>
-    ) {
-        api.fetchPokemonInfo(id).enqueue(object : Callback<PokemonInfoResponse> {
-            override fun onResponse(
-                call: Call<PokemonInfoResponse>,
-                response: Response<PokemonInfoResponse>
-            ) {
-                val pokemonInfoResponse = response.body()
-
-                if (response.isSuccessful && pokemonInfoResponse != null) {
-                    val abilities:List<String> = pokemonInfoResponse.abilities.map {
-                        it.ability.name
-                    }
-
-                    val pokemonDetails = PokemonDetails(
+                    val pokemonData = DatabasePokemonData(
                         pokemonInfoResponse.id,
                         pokemonInfoResponse.name,
                         pokemonInfoResponse.imageUrl,
                         pokemonInfoResponse.height,
-                        pokemonInfoResponse.weight,
-                        abilities
+                        pokemonInfoResponse.weight
                     )
-
-                    callback.onSuccess(pokemonDetails)
-                } else {
-                    callback.onError()
+                    database.pokemonDataDao().insertPokemonData(pokemonData)
                 }
             }
+        }
+    }
 
-            override fun onFailure(call: Call<PokemonInfoResponse>, t: Throwable) {
-                callback.onError()
-            }
-        })
+    override suspend fun getPokemonById(id: String): PokemonDetails {
+        lateinit var pokemonDetails: PokemonDetails
+        withContext(Dispatchers.IO) {
+            val pokemonData = database.pokemonDataDao().getPokemonById(id)
+            pokemonDetails = pokemonData.asPokemonDetails()
+        }
+        return pokemonDetails
     }
 }

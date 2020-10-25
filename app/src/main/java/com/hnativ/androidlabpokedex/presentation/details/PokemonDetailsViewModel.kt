@@ -1,27 +1,20 @@
 package com.hnativ.androidlabpokedex.presentation.details
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.hnativ.androidlabpokedex.data.PokemonRepositoryImpl
+import androidx.lifecycle.*
 import com.hnativ.androidlabpokedex.domain.PokemonDetails
 import com.hnativ.androidlabpokedex.domain.PokemonRepository
+import kotlinx.coroutines.launch
 
-class PokemonDetailsViewModel : ViewModel() {
-    private val repository = PokemonRepositoryImpl()
+class PokemonDetailsViewModel(private val repository: PokemonRepository) : ViewModel() {
 
-    private val _pokemonDetailsLiveData = MutableLiveData<PokemonDetails>()
+    private var _pokemonDetailsLiveData = MutableLiveData<PokemonDetails>()
     val pokemonDetailsLiveData: LiveData<PokemonDetails>
         get() = _pokemonDetailsLiveData
 
-    fun loadPokemonData(id: String) {
-        repository.getPokemonById(id, object : PokemonRepository.ApiCallback<PokemonDetails> {
-            override fun onSuccess(data: PokemonDetails) {
-                _pokemonDetailsLiveData.postValue(data)
-            }
 
-            override fun onError() {
-            }
-        })
+    fun loadPokemonData(id: String) {
+        viewModelScope.launch {
+            _pokemonDetailsLiveData.postValue(repository.getPokemonById(id))
+        }
     }
 }

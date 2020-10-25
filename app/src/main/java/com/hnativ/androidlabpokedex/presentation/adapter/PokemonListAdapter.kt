@@ -11,6 +11,8 @@ import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.Pokemon
 import com.hnativ.androidlabpokedex.domain.PokemonDetails
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Request
+import com.squareup.picasso.RequestCreator
 import kotlinx.android.synthetic.main.item_pokemon.view.*
 
 class PokemonListAdapter :
@@ -43,6 +45,8 @@ class PokemonListAdapter :
 
             Picasso.get()
                 .load(pokemon.imgUrl)
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.ic_broken_image)
                 .into(image)
         }
     }

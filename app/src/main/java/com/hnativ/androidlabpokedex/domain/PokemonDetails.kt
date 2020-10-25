@@ -8,7 +8,6 @@ data class PokemonDetails(
     val imgUrl: String,
     val height: Int,
     val weight: Int,
-    val abilities: List<String>,
     val hp: Int = Random.nextInt(maxHp),
     val attack: Int = Random.nextInt(maxAttack),
     val defense: Int = Random.nextInt(maxDefense),
