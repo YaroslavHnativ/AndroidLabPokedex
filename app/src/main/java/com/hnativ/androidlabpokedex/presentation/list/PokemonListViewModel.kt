@@ -12,7 +12,7 @@ class PokemonListViewModel(private val repository: PokemonRepository) : ViewMode
     val isLoadingLiveData: LiveData<Boolean>
         get() = _isLoadingLiveData
 
-    private val _contentLiveData = repository.pokemonList
+    private val _contentLiveData = MutableLiveData<List<Pokemon>>()
     val contentLiveData: LiveData<List<Pokemon>>
         get() = _contentLiveData
 
@@ -20,49 +20,34 @@ class PokemonListViewModel(private val repository: PokemonRepository) : ViewMode
     val isErrorLiveData: LiveData<Boolean>
         get() = _isErrorLiveData
 
-    fun loadData() {
-
+    init {
+        showLoading()
         viewModelScope.launch {
             try {
-                if (repository.pokemonList.value.isNullOrEmpty()) {
-//                    showLoading()
+                if (repository.getPokemonList().isNullOrEmpty()) {
                     repository.refreshPokemonData()
-//                    showData()
                 }
+                showData(repository.getPokemonList())
             } catch (networkError: IOException) {
-//                if (_contentLiveData.value.isNullOrEmpty())
-//                    Log.i("PokemonListViewModel", "Content is empty")
+                showError()
             }
         }
     }
 
-
-//    Handler().postDelayed(
-//    {
-//        if (Random.nextInt() % 10 == 0) {
-//            showError()
-//        } else {
-//            viewModelScope.launch {
-//                val data = repository.pokemonList
-//                showData(data)
-//            }
-//        }
-//    }, 3000)
-
-    private fun showData() {
-//        _contentLiveData = data as MutableLiveData<List<Pokemon>>
+    private fun showData(data: List<Pokemon>) {
+        _contentLiveData.postValue(data)
         _isLoadingLiveData.value = false
         _isErrorLiveData.value = false
     }
 
     private fun showError() {
-//        _contentLiveData.value = emptyList()
+        _contentLiveData.value = emptyList()
         _isLoadingLiveData.value = false
         _isErrorLiveData.value = true
     }
 
     private fun showLoading() {
-//        _contentLiveData.value = emptyList()
+        _contentLiveData.value = emptyList()
         _isLoadingLiveData.value = true
         _isErrorLiveData.value = false
     }

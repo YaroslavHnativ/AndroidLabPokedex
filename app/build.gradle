@@ -79,4 +79,10 @@ dependencies {
 
     // WorkManager
     implementation "android.arch.work:work-runtime-ktx:1.0.1"
+
+    //Dager
+    implementation "com.google.dagger:dagger:2.27"
+    implementation "com.google.dagger:dagger-android-support:2.27"
+    kapt "com.google.dagger:dagger-android-processor:2.27"
+    kapt "com.google.dagger:dagger-compiler:2.27"
 }
