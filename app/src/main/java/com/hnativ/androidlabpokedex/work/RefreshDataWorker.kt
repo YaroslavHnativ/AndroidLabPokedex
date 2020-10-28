@@ -3,8 +3,7 @@ package com.hnativ.androidlabpokedex.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.hnativ.androidlabpokedex.data.PokemonRepositoryImpl
-import com.hnativ.androidlabpokedex.persistance.getDatabase
+import com.hnativ.androidlabpokedex.App
 import retrofit2.HttpException
 
 class RefreshDataWorker(appContext: Context, params: WorkerParameters) :
@@ -15,8 +14,7 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters) :
     }
 
     override suspend fun doWork(): Result {
-        val database = getDatabase(applicationContext)
-        val repository = PokemonRepositoryImpl(database)
+        val repository = App.instance.appComponent.repository()
 
         return try {
             repository.refreshPokemonData()

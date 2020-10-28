@@ -14,8 +14,7 @@ import kotlinx.android.synthetic.main.fragment_pokemon_list.*
 
 class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
     private val listViewModel: PokemonListViewModel by viewModels {
-        val activity = requireNotNull(this.activity)
-        MyViewModelFactory(activity.application)
+        MyViewModelFactory()
     }
     private val adapter = PokemonListAdapter()
 
@@ -55,8 +54,6 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
             }
             setData(data)
         })
-
-        listViewModel.loadData()
     }
 
     private fun setData(data: List<Pokemon>) {

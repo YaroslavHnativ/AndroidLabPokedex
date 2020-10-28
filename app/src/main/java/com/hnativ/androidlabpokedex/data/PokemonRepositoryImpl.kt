@@ -8,18 +8,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PokemonRepositoryImpl(
-//    private val api: PokedexApiService, private val database: AppDatabase
-    private val database: AppDatabase
+    private val api: PokedexApiService, private val database: AppDatabase
 ) : PokemonRepository {
 
-    private val api: PokedexApiService = createPokedexApiService()
-
     override suspend fun getPokemonList(): List<Pokemon> {
-        lateinit var pokemonList: List<Pokemon>
-        withContext(Dispatchers.IO) {
-            pokemonList = database.pokemonDataDao().getPokemonList().asPokemon()
+        return withContext(Dispatchers.IO) {
+            database.pokemonDataDao().getPokemonList().asPokemon()
         }
-        return pokemonList
     }
 
     override suspend fun refreshPokemonData() {
@@ -42,11 +37,9 @@ class PokemonRepositoryImpl(
     }
 
     override suspend fun getPokemonById(id: String): PokemonDetails {
-        lateinit var pokemonDetails: PokemonDetails
-        withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             val pokemonData = database.pokemonDataDao().getPokemonById(id)
-            pokemonDetails = pokemonData.asPokemonDetails()
+            pokemonData.asPokemonDetails()
         }
-        return pokemonDetails
     }
 }

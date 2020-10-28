@@ -13,8 +13,7 @@ import kotlinx.android.synthetic.main.fragment_pokemon_details.*
 
 class PokemonDetailsFragment : Fragment(R.layout.fragment_pokemon_details) {
     private val viewModel: PokemonDetailsViewModel by viewModels {
-        val activity = requireNotNull(this.activity)
-        MyViewModelFactory(activity.application)
+        MyViewModelFactory()
     }
     private val navArgs: PokemonDetailsFragmentArgs by navArgs()
 

@@ -1,17 +1,14 @@
 package com.hnativ.androidlabpokedex.presentation
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.hnativ.androidlabpokedex.data.PokemonRepositoryImpl
-import com.hnativ.androidlabpokedex.persistance.getDatabase
+import com.hnativ.androidlabpokedex.App
 import com.hnativ.androidlabpokedex.presentation.details.PokemonDetailsViewModel
 import com.hnativ.androidlabpokedex.presentation.list.PokemonListViewModel
 
-class MyViewModelFactory(val app: Application) : ViewModelProvider.Factory {
+class MyViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        val database = getDatabase(app)
-        val repository = PokemonRepositoryImpl(database)
+        val repository = App.instance.appComponent.repository()
 
         return when (modelClass) {
             PokemonListViewModel::class.java -> PokemonListViewModel(repository)
