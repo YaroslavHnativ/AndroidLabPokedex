@@ -2,6 +2,7 @@ package com.hnativ.androidlabpokedex.presentation.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,9 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as AppCompatActivity).supportActionBar?.title = getString(
+            R.string.app_name)
 
         recyclerView.adapter = adapter
 

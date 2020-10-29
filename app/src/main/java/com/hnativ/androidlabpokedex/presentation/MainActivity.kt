@@ -3,8 +3,9 @@ package com.hnativ.androidlabpokedex.presentation
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.constraintlayout.solver.state.State
-import androidx.constraintlayout.widget.ConstraintSet
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.work.*
 import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.work.RefreshDataWorker
@@ -22,7 +23,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController: NavController = navHostFragment.navController
+        NavigationUI.setupActionBarWithNavController(this,navController)
+
         delayedInit()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController: NavController = navHostFragment.navController
+        return navController.navigateUp()
     }
 
     private fun delayedInit() {
