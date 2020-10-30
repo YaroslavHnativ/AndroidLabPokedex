@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_pokemon_list" >
         <action
             android:id="@+id/action_pokemonListFragment_to_pokemonDetailsFragment"
-            app:destination="@id/pokemonDetailsFragment" />
+            app:destination="@id/pokemonDetailsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/pokemonDetailsFragment"
@@ -24,6 +28,10 @@
             app:argType="string" />
         <action
             android:id="@+id/action_pokemonDetailsFragment_to_pokemonListFragment"
-            app:destination="@id/pokemonListFragment" />
+            app:destination="@id/pokemonListFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
     </fragment>
 </navigation>

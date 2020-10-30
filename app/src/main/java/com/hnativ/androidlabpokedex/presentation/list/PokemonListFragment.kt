@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.Pokemon
+import com.hnativ.androidlabpokedex.presentation.MainActivity
 import com.hnativ.androidlabpokedex.presentation.MyViewModelFactory
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListAdapter
 import com.hnativ.androidlabpokedex.presentation.adapter.PokemonListener
@@ -35,7 +36,13 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
         }
 
         listViewModel.isLoadingLiveData.observe(viewLifecycleOwner, {
-            loadingView.visibility = if (it) {
+            loadingTitle.visibility = if (it) {
+                (requireActivity() as MainActivity).supportActionBar!!.hide()
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            loadingText.visibility = if (it) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -52,6 +59,7 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
         listViewModel.contentLiveData.observe(viewLifecycleOwner, { data ->
             recyclerView.visibility = if (data.isNotEmpty()) {
+                (requireActivity() as MainActivity).supportActionBar!!.show()
                 View.VISIBLE
             } else {
                 View.GONE

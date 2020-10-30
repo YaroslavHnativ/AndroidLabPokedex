@@ -3,16 +3,12 @@ package com.hnativ.androidlabpokedex.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ExpandableListView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hnativ.androidlabpokedex.R
 import com.hnativ.androidlabpokedex.domain.Pokemon
-import com.hnativ.androidlabpokedex.domain.PokemonDetails
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Request
-import com.squareup.picasso.RequestCreator
 import kotlinx.android.synthetic.main.item_pokemon.view.*
 
 class PokemonListAdapter :

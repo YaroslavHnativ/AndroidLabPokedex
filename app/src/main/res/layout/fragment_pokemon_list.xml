@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     tools:context=".presentation.list.PokemonListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -20,10 +21,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:spanCount="2" />
 
-    <ProgressBar
-        android:id="@+id/loadingView"
+    <TextView
+        android:id="@+id/loadingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/loading"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size"
+        android:theme="@style/CircularProgress"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/loadingTitle"
+        app:layout_constraintStart_toStartOf="@+id/loadingTitle" />
+
+    <TextView
+        android:id="@+id/loadingTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/dancing_script_bold"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="70sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,11 +56,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/error"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:src="@drawable/ic_connection_error"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_connection_error"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
