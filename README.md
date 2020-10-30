@@ -5,9 +5,12 @@ Pokedex is a small demo application based on modern Android application tech-sta
 </p>
 </br>
 
+
+<img src="/pokemons.gif" align="right" width="32%"/>
+
 ## Tech stack & Open-source libraries
 - Minimum SDK level 21
-- [Kotlin](https://kotlinlang.org/) based, Callback for asynchronous.
+- [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) for asynchronous.
 - Dagger for dependency injection.
 - JetPack
   - LiveData - notify domain layer data to views.
@@ -17,7 +20,11 @@ Pokedex is a small demo application based on modern Android application tech-sta
 - Architecture
   - MVVM Architecture
   - Repository pattern
+- [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs.
 - Picasso - loading images.
+- [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
+- Custom View
+  - [ProgressView](https://github.com/skydoves/progressview) - A polished and flexible ProgressView, fully customizable with animations.
 
 ## Architecture
 Pokedex is based on MVVM architecture and a repository pattern.
